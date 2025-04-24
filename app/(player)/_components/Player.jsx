@@ -56,19 +56,34 @@ export default function Player({ id }) {
         setPlaying(!playing);
     };
 
-    const downloadSong = async () => {
+const downloadSong = async () => {
+    try {
         setIsDownloading(true);
+
         const response = await fetch(audioURL);
         const datas = await response.blob();
+
         const url = URL.createObjectURL(datas);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `${data.name}.mp3`;
+
+        // Suggested folder name
+        a.download = `TuneFlow/${data.name}.mp3`;
+
+        document.body.appendChild(a);
         a.click();
+        document.body.removeChild(a);
+
         URL.revokeObjectURL(url);
-        toast.success('downloaded');
+        toast.success('Downloaded');
+    } catch (error) {
+        toast.error('Download failed');
+        console.error(error);
+    } finally {
         setIsDownloading(false);
-    };
+    }
+};
+
 
     const handleSeek = (e) => {
         const seekTime = e[0];
