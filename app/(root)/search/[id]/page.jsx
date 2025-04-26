@@ -1,13 +1,19 @@
 import Search from "../_components/Search";
 
-export const generateMetadata = ({ params }) => {
+export async function generateMetadata(props) {
+    const id = await props.params.id;
+    const decodedId = id ? decodeURIComponent(id) : '';
+
     return {
-        title: `Search Results - ${decodeURI(params.id).toLocaleUpperCase()}`,
-        description: `Viewing search results for ${decodeURI(params.id)}`,
+        title: decodedId ? `Search Results - ${decodedId.toUpperCase()}` : 'Search',
+        description: decodedId ? `Viewing search results for ${decodedId}` : 'Search page',
     };
-};
-export default function Page({ params }) {
-    return(
-        <Search params={params}/>
-    )
+}
+
+export default async function Page(props) {
+    const params = await props.params;
+    
+    return (
+        <Search params={params} />
+    );
 }
