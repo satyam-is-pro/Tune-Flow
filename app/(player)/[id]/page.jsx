@@ -10,10 +10,10 @@ export const generateMetadata = async ({ params }) => {
     const song = data?.data[0];
     return {
         title: song.name,
-        description: `Listen to "${song.name}" by ${data?.artists?.primary[0]?.name || "unknown"} from the album "${song.album?.name}".`,
+        description: `Listen to "${song.name}" by ${song.artists?.primary?.[0]?.name || "unknown"} from the album "${song.album?.name}".`,
         openGraph: {
             title: song.name,
-            description: `Listen to "${song.name}" by ${data?.artists?.primary[0]?.name || "unknown"}.`,
+            description: `Listen to "${song.name}" by ${song.artists?.primary?.[0]?.name || "unknown"}.`,
             type: "music.song",
             url: song.url,
             images: [
@@ -27,13 +27,13 @@ export const generateMetadata = async ({ params }) => {
             music: {
                 album: song.album?.url,
                 release_date: song.releaseDate,
-                musician: data?.artists?.primary[0]?.name || "unknown",
+                musician: song.artists?.primary?.[0]?.name || "unknown",
             },
         },
         twitter: {
             card: "summary_large_image",
             title: song.name,
-            description: `Listen to "${song.name}" by ${data?.artists?.primary[0]?.name || "unknown"}.`,
+            description: `Listen to "${song.name}" by ${song.artists?.primary?.[0]?.name || "unknown"}.`,
             images: song.image?.[0]?.url,
         },
     };
